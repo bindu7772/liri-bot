@@ -1,17 +1,9 @@
-//twitter key: HAd1PpJatCITnbYI9kEDsLLRE
-//Key secret: KVdbOZGrBpLx2aL7U5PFdz3qa1TLyD3IK7qtbP6MSNKJKPwDbS
-//access token: 914570870164779009-HEvUF4UtygvikwYqKUr2rJbfMITYy1v
-//access token secret: wFAyPz0fdGc723nXUpiMaKDqj88be3k05KTsE5cGyMVWr
-
-
 var request = require("request");
 var Spotify = require('node-spotify-api');
 var twitterData = require("./keys.js");
 var Twitter = require('twitter');
 
 var args = process.argv.slice(2);
-//console.log(args);
-//console.log(movie_name);
 
 // Then run a request to the OMDB API with the movie specified
 if (args[0] === "movie-this") {
@@ -49,8 +41,7 @@ if (args[0] === "movie-this") {
 }
 
 if (args[0] == "spotify-this-song") {
-    if (args.length === 1)
-    {
+    if (args.length === 1) {
         var spotify = new Spotify({
             id: "cb1e672eb6254d7393eaff33c5945209",
             secret: "74931721ecac46b2909c3592109ac91e"
@@ -59,7 +50,6 @@ if (args[0] == "spotify-this-song") {
         spotify
           .search({ type: 'track', query: "The Sign" })
           .then(function (response) {
-             // console.log(response);
               console.log("Artist(s): " + response.tracks.items[0].album.artists[0].name);
               console.log("The Song's name: " + response.tracks.items[0].name);
               console.log("Preview link from Spotify: " + response.tracks.items[0].preview_url);
@@ -72,54 +62,46 @@ if (args[0] == "spotify-this-song") {
     else {
         var name_arr = args.slice(1);
         var name = "";
-        for (var i = 0; i < name_arr.length; i++)
-        {
+        for (var i = 0; i < name_arr.length; i++) {
             name = name + " " + name_arr[i];
         }
-       // console.log(name);
         var spotify = new Spotify({
             id: "cb1e672eb6254d7393eaff33c5945209",
             secret: "74931721ecac46b2909c3592109ac91e"
-            });
- 
-    spotify
-      .search({ type: 'track', query: name })
-      .then(function(response) {
-          //console.log(response);
-          console.log("Artist(s): " + response.tracks.items[0].album.artists[0].name);
-          console.log("The Song's name: " + response.tracks.items[0].name);
-          console.log("Preview link from Spotify: " + response.tracks.items[0].preview_url);
-          console.log("Album name: " + response.tracks.items[0].album.name);
-      })
-      .catch(function(err) {
-          console.log(err);
-      });
+        });
+
+        spotify
+          .search({ type: 'track', query: name })
+          .then(function (response) {
+              console.log("Artist(s): " + response.tracks.items[0].album.artists[0].name);
+              console.log("The Song's name: " + response.tracks.items[0].name);
+              console.log("Preview link from Spotify: " + response.tracks.items[0].preview_url);
+              console.log("Album name: " + response.tracks.items[0].album.name);
+          })
+          .catch(function (err) {
+              console.log(err);
+          });
     }
 }
 
-if (args[0] === "my-tweets")
-{
+if (args[0] === "my-tweets") {
     var client = new Twitter({
         consumer_key: twitterData.consumer_key,
         consumer_secret: twitterData.consumer_secret,
         access_token_key: twitterData.access_token_key,
         access_token_secret: twitterData.access_token_secret
     });
-    //console.log(client);
     var params = { screen_name: 'nodejs' };
     client.get('search/tweets', { q: 'mansi_patel21' }, function (error, tweets, response) {
         if (error) {
             console.log(error);
         }
-        //console.log(tweets);
-        for (var i = 0; i < tweets.statuses.length; i++)
-        {
+        for (var i = 0; i < tweets.statuses.length; i++) {
             console.log(tweets.statuses[i].text);
         }
     });
 }
 
-if (args[0] === "do-what-it-says")
-{
+if (args[0] === "do-what-it-says") {
 
 }
