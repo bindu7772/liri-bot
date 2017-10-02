@@ -1,9 +1,13 @@
-// Spotify client id: cb1e672eb6254d7393eaff33c5945209
-//spotify client secret: 74931721ecac46b2909c3592109ac91e
+//twitter key: HAd1PpJatCITnbYI9kEDsLLRE
+//Key secret: KVdbOZGrBpLx2aL7U5PFdz3qa1TLyD3IK7qtbP6MSNKJKPwDbS
+//access token: 914570870164779009-HEvUF4UtygvikwYqKUr2rJbfMITYy1v
+//access token secret: wFAyPz0fdGc723nXUpiMaKDqj88be3k05KTsE5cGyMVWr
 
 
 var request = require("request");
 var Spotify = require('node-spotify-api');
+var twitterData = require("./keys.js");
+var Twitter = require('twitter');
 
 var args = process.argv.slice(2);
 //console.log(args);
@@ -91,4 +95,31 @@ if (args[0] == "spotify-this-song") {
           console.log(err);
       });
     }
+}
+
+if (args[0] === "my-tweets")
+{
+    var client = new Twitter({
+        consumer_key: twitterData.consumer_key,
+        consumer_secret: twitterData.consumer_secret,
+        access_token_key: twitterData.access_token_key,
+        access_token_secret: twitterData.access_token_secret
+    });
+    //console.log(client);
+    var params = { screen_name: 'nodejs' };
+    client.get('search/tweets', { q: 'mansi_patel21' }, function (error, tweets, response) {
+        if (error) {
+            console.log(error);
+        }
+        //console.log(tweets);
+        for (var i = 0; i < tweets.statuses.length; i++)
+        {
+            console.log(tweets.statuses[i].text);
+        }
+    });
+}
+
+if (args[0] === "do-what-it-says")
+{
+
 }
