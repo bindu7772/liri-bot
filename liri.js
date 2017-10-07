@@ -2,6 +2,7 @@ var request = require("request");
 var Spotify = require('node-spotify-api');
 var twitterData = require("./keys.js");
 var Twitter = require('twitter');
+var fs = require("fs");
 
 var args = process.argv.slice(2);
 
@@ -103,5 +104,32 @@ if (args[0] === "my-tweets") {
 }
 
 if (args[0] === "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function (error, data) {
 
+        // If the code experiences any errors it will log the error to the console.
+        if (error) {
+            return console.log(error);
+        }
+        console.log(data);
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        var spotify = new Spotify({
+            id: "cb1e672eb6254d7393eaff33c5945209",
+            secret: "74931721ecac46b2909c3592109ac91e"
+        });
+
+        spotify
+          .search({ type: 'track', query: dataArr[1] })
+          .then(function (response) {
+              console.log("Artist(s): " + response.tracks.items[0].album.artists[0].name);
+              console.log("The Song's name: " + response.tracks.items[0].name);
+              console.log("Preview link from Spotify: " + response.tracks.items[0].preview_url);
+              console.log("Album name: " + response.tracks.items[0].album.name);
+          })
+          .catch(function (err) {
+              console.log(err);
+          });
+
+    });
 }
